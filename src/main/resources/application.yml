@@ -1,0 +1,54 @@
+server:
+  servlet:
+    context-path: /v1
+spring:
+  profiles:
+    active: production
+  application:
+    name: "payment-gateway"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL8Dialect"
+  datasource:
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 3
+logging:
+  level:
+    root: TRACE
+---
+
+server:
+  port: 8080
+spring:
+  profiles: dev
+  datasource:
+    url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
+    username: "test"
+    password: "test"
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: server.log
+server:
+  port: 80
+spring:
+  profiles: production
+  datasource:
+    url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
+    username: "test"
+    password: "goodpassword"
+  jpa:
+    show-sql: false
