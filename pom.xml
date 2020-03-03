@@ -15,12 +15,14 @@
 	<description>Payment gateway sample application (Solanteq practice task)</description>
 
 	<properties>
+		<spring-plugin.version>2.0.0.BUILD-SNAPSHOT</spring-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<maven.compiler.release>11</maven.compiler.release>
 		<springfox-version>2.9.2</springfox-version>
 		<start-class>ru.ifmo.practice.gateway.PaymentGatewayApplication</start-class>
+
 	</properties>
 
 	<dependencies>
@@ -58,7 +60,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>1.0.3.RELEASE</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

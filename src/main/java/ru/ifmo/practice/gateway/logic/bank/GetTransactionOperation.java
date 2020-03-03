@@ -2,22 +2,22 @@ package ru.ifmo.practice.gateway.logic.bank;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
+import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 
 @Component
 @RequiredArgsConstructor
-public class UpdateTransactionStatusOperation {
+public class GetTransactionOperation {
 
-    private final TransactionDaoAdapter daoAdapter;
+    private final TransactionDaoAdapter transactionDaoAdapter;
 
-    public boolean process(long transactionId, TransactionStatusView status) {
+    public Transaction process(long id) {
         try {
-            daoAdapter.updateTransactionStatus(transactionId, status);
-            return true;
+            return transactionDaoAdapter.getTransactionById(id);
         } catch (PaymentGatewayException e) {
-            return false;
+            return null;
         }
     }
+
 }
