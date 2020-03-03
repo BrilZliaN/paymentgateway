@@ -3,7 +3,7 @@ CREATE TABLE card (
     PRIMARY KEY (id),
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     number VARCHAR(25),
-    valid_until VARCHAR(5),
+    valid VARCHAR(5),
 	owner VARCHAR(100)
 );
 CREATE TABLE invoice (
