@@ -19,6 +19,7 @@ produces:
 paths:
   /invoice:
     post:
+      description: Posts an invoice
       tags:
         - customer
       operationId: addInvoice
@@ -35,6 +36,7 @@ paths:
             $ref: '#/definitions/InvoiceView'
   '/invoice/{invoiceId}':
     get:
+      description: Gets an invoice
       tags:
         - customer
       operationId: getInvoiceStatus
@@ -81,6 +83,8 @@ definitions:
       sum:
         type: number
         format: double
+        description: The amount of the transaction
+    description: The invoice as viewed by a client
   InvoiceView:
     allOf:
       - type: object
@@ -88,26 +92,35 @@ definitions:
           id:
             type: integer
             format: int64
+            description: Invoice id
       - $ref: '#/definitions/InvoicePostView'
+        description: The invoice as saved in the database
   CreditCardView:
     type: object
     properties:
       invoiceId:
         type: integer
         format: int64
+        description: Invoice id
       number:
         type: integer
         format: int64
         minimum: 100000000000000
+        description: The number that identifies the card
       expirationDate:
         type: string
         pattern: '^\d{2}/\d{2}$'
+        description: Date of card's expiration
       holder:
         type: string
         minLength: 1
+        maxLength: 100
+        description: Holder's name
       cvv:
         type: string
         pattern: '^\d{3}$'
+        description: Card's cvv
+    description: Credit card information
   TransactionReadinessView:
     type: object
     properties:
@@ -119,18 +132,25 @@ definitions:
           - PROCESSING
           - SUCCESS
           - FAIL
+        description: This string will be transformed into a human-readable one for the client
+    description: Information on the transaction's status for the client
   TransactionStatusView:
     type: object
     properties:
       answerCode:
-        type: string
+        type: integer
+        description: Answer code from the bank
+    description: Information on the transaction's status for the inner use
   ErrorView:
     type: object
     properties:
       code:
         type: integer
+        description: Error code
       message:
         type: string
+        description: Error message
+    description: Describes an error
 parameters:
   InvoiceId:
     in: path
@@ -138,9 +158,11 @@ parameters:
     type: integer
     format: int64
     required: true
+    description: Invoice id
   TransactionId:
     in: path
     name: transactionId
     type: integer
     format: int64
     required: true
+    description: Transaction id
