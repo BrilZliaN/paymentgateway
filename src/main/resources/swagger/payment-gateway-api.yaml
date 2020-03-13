@@ -19,7 +19,7 @@ produces:
 paths:
   /invoice:
     post:
-      description: Posts an invoice
+      description: Adds an invoice
       tags:
         - customer
       operationId: addInvoice
@@ -34,6 +34,14 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/InvoiceView'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorView'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorView'
   '/invoice/{invoiceId}':
     get:
       description: Gets an invoice
@@ -47,7 +55,16 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/TransactionReadinessView'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorView'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorView'
     post:
+      description: Creates a transaction
       tags:
         - customer
       operationId: createTransaction
@@ -61,8 +78,17 @@ paths:
       responses:
         '201':
           description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorView'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorView'
   '/transaction/{transactionId}':
     put:
+      description: Updates transaction status
       tags:
         - bank
       operationId: updateTransactionStatus
@@ -76,6 +102,14 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorView'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorView'
 definitions:
   InvoicePostView:
     type: object
@@ -83,6 +117,7 @@ definitions:
       sum:
         type: number
         format: double
+        minimum: 0
         description: The amount of the transaction
     description: The invoice as viewed by a client
   InvoiceView:
@@ -139,6 +174,7 @@ definitions:
     properties:
       answerCode:
         type: integer
+        minimum: 0
         description: Answer code from the bank
     description: Information on the transaction's status for the inner use
   ErrorView:
