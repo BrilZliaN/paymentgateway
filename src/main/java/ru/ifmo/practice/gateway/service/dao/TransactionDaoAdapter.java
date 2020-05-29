@@ -24,12 +24,12 @@ public class TransactionDaoAdapter {
     private final CardBuilder cardBuilder;
 
     @Transactional
-    public void createTransaction(Long invoiceId, CreditCardView creditCardView) {
+    public Transaction createTransaction(Long invoiceId, CreditCardView creditCardView) {
         final var invoice = invoiceDaoAdapter.getInvoiceById(invoiceId);
         final var card = addCard(creditCardView);
         final var transaction = transactionBuilder.build(card, invoice);
         try {
-            transactionRepository.save(transaction);
+            return transactionRepository.save(transaction);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException, "Невозможно создать транзакцию");
         }

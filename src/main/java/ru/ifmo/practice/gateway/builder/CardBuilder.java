@@ -10,7 +10,7 @@ public class CardBuilder {
     public Card build(CreditCardView view) {
         var card = new Card();
         card.setNumber(view.getNumber());
-        card.setOwned(view.getHolder());
+        card.setOwner(view.getHolder());
         card.setValid(view.getExpirationDate());
         return card;
     }

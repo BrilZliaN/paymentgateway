@@ -22,13 +22,13 @@ logging:
 ---
 
 server:
-  port: 27182
+  port: 8080
 spring:
   profiles: dev
   datasource:
     url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
-    username: "testuser"
-    password: "userPASS098"
+    username: "test"
+    password: "12345"
   jpa:
     show-sql: true
     properties:
@@ -43,12 +43,14 @@ logging:
   file:
     name: server.log
 server:
-  port: 31415
+  port: 80
 spring:
   profiles: production
   datasource:
     url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
-    username: "testuser"
-    password: "userPASS098"
+    username: "test"
+    password: "12345"
   jpa:
     show-sql: false
+    hibernate:
+      use-new-id-generator-mappings: false

@@ -13,6 +13,7 @@ public class CreditCardValidator {
         validateNumber(creditCardView.getNumber());
         validateExpirationDate(creditCardView.getExpirationDate());
         validateHolder(creditCardView.getHolder());
+        validateLuhn(creditCardView.getNumber().toString());
     }
 
     private static void validateNumber(Long number) {
@@ -37,6 +38,31 @@ public class CreditCardValidator {
     private static void validateHolder(String holder) {
         if (!holder.matches("^((?:[A-Z]+ ?){1,3})$")) {
             throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "неверный формат имени владельца");
+        }
+    }
+
+    static void validateLuhn(String cardNo) {
+        int nDigits = cardNo.length();
+
+        int nSum = 0;
+        boolean isSecond = false;
+        for (int i = nDigits - 1; i >= 0; i--) {
+
+            int d = cardNo.charAt(i) - '0';
+
+            if (isSecond == true)
+                d = d * 2;
+
+            // We add two digits to handle
+            // cases that make two digits
+            // after doubling
+            nSum += d / 10;
+            nSum += d % 10;
+
+            isSecond = !isSecond;
+        }
+        if (nSum % 10 != 0) {
+            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "неверный номер карты");
         }
     }
 
