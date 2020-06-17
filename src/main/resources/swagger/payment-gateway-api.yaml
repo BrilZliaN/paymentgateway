@@ -19,7 +19,6 @@ produces:
 paths:
   /invoice:
     post:
-      description: Adds an invoice
       tags:
         - customer
       operationId: addInvoice
@@ -34,17 +33,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/InvoiceView'
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorView'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorView'
   '/invoice/{invoiceId}':
     get:
-      description: Gets an invoice
       tags:
         - customer
       operationId: getInvoiceStatus
@@ -55,16 +45,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/TransactionReadinessView'
-        '404':
-          description: Not Found
-          schema:
-            $ref: '#/definitions/ErrorView'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorView'
     post:
-      description: Creates a transaction
       tags:
         - customer
       operationId: createTransaction
@@ -78,17 +59,8 @@ paths:
       responses:
         '201':
           description: Created
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorView'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorView'
   '/transaction/{transactionId}':
     put:
-      description: Updates transaction status
       tags:
         - bank
       operationId: updateTransactionStatus
@@ -102,14 +74,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorView'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorView'
 definitions:
   InvoicePostView:
     type: object
@@ -117,9 +81,6 @@ definitions:
       sum:
         type: number
         format: double
-        minimum: 0
-        description: The amount of the transaction
-    description: The invoice as viewed by a client
   InvoiceView:
     allOf:
       - type: object
@@ -127,35 +88,23 @@ definitions:
           id:
             type: integer
             format: int64
-            description: Invoice id
       - $ref: '#/definitions/InvoicePostView'
-        description: The invoice as saved in the database
   CreditCardView:
     type: object
     properties:
-      invoiceId:
-        type: integer
-        format: int64
-        description: Invoice id
       number:
         type: integer
         format: int64
         minimum: 100000000000000
-        description: The number that identifies the card
       expirationDate:
         type: string
-        pattern: '^\d{2}/\d{2}$'
-        description: Date of card's expiration
+        pattern: '^\d{2}\/\d{2}$'
       holder:
         type: string
         minLength: 1
-        maxLength: 100
-        description: Holder's name
       cvv:
         type: string
         pattern: '^\d{3}$'
-        description: Card's cvv
-    description: Credit card information
   TransactionReadinessView:
     type: object
     properties:
@@ -167,26 +116,18 @@ definitions:
           - PROCESSING
           - SUCCESS
           - FAIL
-        description: This string will be transformed into a human-readable one for the client
-    description: Information on the transaction's status for the client
   TransactionStatusView:
     type: object
     properties:
       answerCode:
-        type: integer
-        minimum: 0
-        description: Answer code from the bank
-    description: Information on the transaction's status for the inner use
+        type: string
   ErrorView:
     type: object
     properties:
       code:
         type: integer
-        description: Error code
       message:
         type: string
-        description: Error message
-    description: Describes an error
 parameters:
   InvoiceId:
     in: path
@@ -194,11 +135,9 @@ parameters:
     type: integer
     format: int64
     required: true
-    description: Invoice id
   TransactionId:
     in: path
     name: transactionId
     type: integer
     format: int64
     required: true
-    description: Transaction id
