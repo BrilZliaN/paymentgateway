@@ -1,5 +1,5 @@
 CREATE TABLE card (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT NOT NULL,
     PRIMARY KEY (id),
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     number VARCHAR(25),
@@ -7,17 +7,17 @@ CREATE TABLE card (
 	owner VARCHAR(100)
 );
 CREATE TABLE invoice (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT NOT NULL,
     PRIMARY KEY (id),
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     sum DOUBLE
 );
 
 CREATE TABLE transaction (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT NOT NULL,
     PRIMARY KEY (id),
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status_code INT,
+    status_code VARCHAR(100),
     status_date TIMESTAMP,
     card_id INT,
     invoice_id INT,
