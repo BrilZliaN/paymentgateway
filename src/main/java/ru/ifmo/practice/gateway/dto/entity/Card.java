@@ -18,6 +18,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
     private LocalDateTime created;
 
     private Long number;

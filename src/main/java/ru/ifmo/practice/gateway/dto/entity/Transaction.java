@@ -15,6 +15,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "created", insertable = false, updatable = false)
     private LocalDateTime created;
 
     private String statusCode;

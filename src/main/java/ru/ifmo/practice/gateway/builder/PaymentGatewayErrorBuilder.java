@@ -9,7 +9,7 @@ import java.util.Objects;
 @Component
 public class PaymentGatewayErrorBuilder {
 
-    public static PaymentGatewayError build(PaymentGatewayException exception) {
+    public PaymentGatewayError build(PaymentGatewayException exception) {
         var error = new PaymentGatewayError();
         var message = exception.getMessage();
         error.setMessage(Objects.requireNonNullElse(message, "Ошибка транзакции"));

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
+import ru.ifmo.practice.gateway.api.models.TransactionReadinessView;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.builder.CardBuilder;
 import ru.ifmo.practice.gateway.builder.TransactionBuilder;
@@ -27,7 +28,9 @@ public class TransactionDaoAdapter {
     public Transaction createTransaction(Long invoiceId, CreditCardView creditCardView) {
         final var invoice = invoiceDaoAdapter.getInvoiceById(invoiceId);
         final var card = addCard(creditCardView);
-        final var transaction = transactionBuilder.build(card, invoice);
+        var transaction = transactionBuilder.build(card, invoice);
+        transactionBuilder.update(transaction,
+                new TransactionStatusView().answerCode(TransactionReadinessView.TypeEnum.PROCESSING.toString()));
         try {
             return transactionRepository.save(transaction);
         } catch (DataAccessException dataAccessException) {
@@ -57,6 +60,11 @@ public class TransactionDaoAdapter {
     Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);
         try {
+//            if (cardRepository.existsCardByNumber(card.getNumber())) {
+//                return cardRepository.findCardByNumber(card.getNumber());
+//            } else {
+//                return cardRepository.save(card);
+//            }
             return cardRepository.save(card);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);

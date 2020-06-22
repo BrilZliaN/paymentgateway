@@ -18,7 +18,6 @@ public class TransactionController implements TransactionApiDelegate {
 
     @PutMapping("/transaction/{transactionId}")
     public ResponseEntity<Void> updateTransactionStatus(@PathVariable Long transactionId, @RequestBody TransactionStatusView transactionStatus) {
-        System.out.println("ACCEPTED$$$$$$$$$$$$$$$$");
         updateTransactionStatusOperation.process(transactionId, transactionStatus);
         return ResponseEntity.ok().build();
     }

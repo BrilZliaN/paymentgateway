@@ -54,3 +54,7 @@ spring:
     show-sql: false
     hibernate:
       use-new-id-generator-mappings: false
+
+coordinator:
+  request-uri: "http://localhost:9123/accept?Content-Type=application/json"
+  source-pattern: "http://localhost:80/v1/transaction/"

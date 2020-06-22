@@ -1,38 +1,27 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ru.ifmo.practice.gateway.api.models.TransactionReadinessView;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
+import ru.ifmo.practice.gateway.dto.PaymentData;
 import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
-
-import javax.crypto.spec.PSource;
 
 @Component
 @RequiredArgsConstructor
 public class RequestPaymentOperation {
 
-    @Getter
-    @Setter
-    private class PaymentData {
-        public PaymentData(Transaction transaction, String source) {
-            this.transaction = transaction;
-            this.source = source;
-        }
+    @Value("${coordinator.request-uri}")
+    private String URI;
 
-        public Transaction transaction;
-        public String source;
-    }
-
-    private final String URI = "http://localhost:443/accept?Content-Type=application/json";
-    private final String SOURCE = "http://localhost:80/v1/transaction/";
+    @Value("${coordinator.source-pattern}")
+    private String SOURCE;
 
     private final TransactionDaoAdapter transactionDaoAdapter;
 
