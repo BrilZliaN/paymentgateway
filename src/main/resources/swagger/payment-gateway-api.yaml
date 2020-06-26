@@ -92,16 +92,13 @@ definitions:
   CreditCardView:
     type: object
     properties:
-      invoiceId:
-        type: integer
-        format: int64
       number:
         type: integer
         format: int64
         minimum: 100000000000000
       expirationDate:
         type: string
-        pattern: '^\d{2}/\d{2}$'
+        pattern: '^\d{2}\/\d{2}$'
       holder:
         type: string
         minLength: 1
