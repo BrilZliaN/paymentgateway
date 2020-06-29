@@ -3,14 +3,14 @@ info:
   description: "Payment gateway sample application (Solanteq practice task)"
   version: "1.0"
   title: "Payment Gateway API"
-host: "gateway.solanteq.com"
-basePath: "/v1"
+host: "localhost:8080"
 tags:
   - name: customer
     description: Customer-side actions
   - name: bank
     description: Bank-side actions
 schemes:
+  - http
   - https
 consumes:
   - application/json

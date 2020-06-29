@@ -1,9 +1,6 @@
-server:
-  servlet:
-    context-path: /v1
 spring:
   profiles:
-    active: production
+    active: dev
   application:
     name: "payment-gateway"
   jpa:
@@ -18,7 +15,9 @@ spring:
       maximum-pool-size: 3
 logging:
   level:
-    root: TRACE
+    root: DEBUG
+vaadin:
+  compatibilityMode: false
 ---
 
 server:
