@@ -92,9 +92,6 @@ definitions:
   CreditCardView:
     type: object
     properties:
-      invoiceId:
-        type: integer
-        format: int64
       number:
         type: integer
         format: int64
