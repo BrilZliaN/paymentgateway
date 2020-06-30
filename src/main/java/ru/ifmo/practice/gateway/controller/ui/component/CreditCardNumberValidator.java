@@ -17,7 +17,7 @@ public class CreditCardNumberValidator extends AbstractValidator<Long> {
             return this.toResult(value, false);
         } else {
             var stringValue = Long.toString(value);
-            var isValid = CreditCardValidator.validateLuhn(stringValue);
+            var isValid = CreditCardValidator.validateCardNumber(stringValue);
             return this.toResult(value, isValid);
         }
     }

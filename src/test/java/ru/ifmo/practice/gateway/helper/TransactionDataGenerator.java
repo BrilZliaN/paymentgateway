@@ -20,7 +20,6 @@ public class TransactionDataGenerator {
         creditCardView.setHolder(cardDataGenerator.generateHolder());
         creditCardView.setExpirationDate(cardDataGenerator.generateDate(1));
         creditCardView.setCvv(Integer.toString(random.nextInt(1000)));
-        creditCardView.setInvoiceId(invoiceId);
         return creditCardView;
     }
 

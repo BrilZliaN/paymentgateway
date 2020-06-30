@@ -1,14 +1,11 @@
 package ru.ifmo.practice.gateway.helper;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Random;
 
-@RunWith(SpringRunner.class)
 public class IdValidatorTest {
 
     private final Random random = new Random(System.currentTimeMillis());

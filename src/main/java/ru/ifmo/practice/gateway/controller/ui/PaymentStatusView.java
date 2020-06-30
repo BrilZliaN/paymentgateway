@@ -25,7 +25,7 @@ public class PaymentStatusView extends FormLayout {
     private final CustomerApi customerApi;
     private final UserStorage userStorage;
     private final InvoiceInformationCard invoiceInformationCard;
-    private final Label bankAnswerLabel = new Label("Ожидание платежных данных");
+    private final Label bankAnswerLabel = new Label("");
 
     public PaymentStatusView(CustomerApi customerApi, UserStorage userStorage) {
         this.customerApi = customerApi;
@@ -35,6 +35,7 @@ public class PaymentStatusView extends FormLayout {
                         new Label("Статус последней транзакции по данной покупке"), bankAnswerLabel));
         ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
         executorService.scheduleAtFixedRate(this::update, 5, 30, TimeUnit.SECONDS);
+        updateStatus();
     }
 
     private void update() {
@@ -72,7 +73,7 @@ public class PaymentStatusView extends FormLayout {
                 status = "Платеж не прошел";
                 break;
             case UNKNOWN:
-                status = "Неизвестно";
+                status = "Ожидание платежных данных";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + userStorage.getStatus().getType());

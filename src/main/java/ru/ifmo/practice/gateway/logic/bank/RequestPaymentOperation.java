@@ -39,7 +39,7 @@ public class RequestPaymentOperation {
             }
         } catch (RestClientException e) {
             updateTransactionStatus(transaction, TransactionReadinessView.TypeEnum.FAIL);
-            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "ошибка передачи транзакции");
+//            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "ошибка передачи транзакции");
         }
     }
 

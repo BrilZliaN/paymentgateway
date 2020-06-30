@@ -1,16 +1,12 @@
 package ru.ifmo.practice.gateway.builder;
 
 import org.junit.jupiter.api.Test;
+import ru.ifmo.practice.gateway.api.models.InvoicePostView;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.ifmo.practice.gateway.api.models.InvoicePostView;
-
-@RunWith(SpringRunner.class)
 class InvoiceBuilderTest {
 
     private final Random random = new Random(System.currentTimeMillis());

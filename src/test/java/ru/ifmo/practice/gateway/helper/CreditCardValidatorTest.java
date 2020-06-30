@@ -1,8 +1,6 @@
 package ru.ifmo.practice.gateway.helper;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
 
 import java.util.Random;
@@ -10,7 +8,6 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
 class CreditCardValidatorTest {
 
     private final Random random = new Random(System.currentTimeMillis());

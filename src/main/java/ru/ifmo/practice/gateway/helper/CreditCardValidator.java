@@ -44,13 +44,13 @@ public class CreditCardValidator {
     }
 
     private void validateLuhn(String cardNumber) {
-        var result = validateLuhn(cardNumber);
+        var result = CreditCardValidator.validateCardNumber(cardNumber);
         if (!result) {
             throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "неверный номер карты");
         }
     }
 
-    public static boolean validateLuhn(String cardNumber) {
+    public static boolean validateCardNumber(String cardNumber) {
         int nDigits = cardNumber.length();
 
         int nSum = 0;

@@ -56,6 +56,14 @@ public class TransactionDaoAdapter {
         }
     }
 
+    public Transaction getTransactionByInvoiceId(Long id) {
+        try {
+            return transactionRepository.findByInvoiceId(id).orElseThrow(ExceptionFactory::notFound);
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException);
+        }
+    }
+
     @Transactional(value = Transactional.TxType.SUPPORTS)
     Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);

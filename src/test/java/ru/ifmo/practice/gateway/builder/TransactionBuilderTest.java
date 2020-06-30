@@ -1,8 +1,6 @@
 package ru.ifmo.practice.gateway.builder;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.dto.entity.Card;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
@@ -11,9 +9,9 @@ import ru.ifmo.practice.gateway.helper.CardDataGenerator;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
 class TransactionBuilderTest {
 
     private final static int TEST_NUMBER = 100;
