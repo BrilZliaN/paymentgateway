@@ -35,6 +35,10 @@ spring:
       hibernate:
         format_sql: true
 
+coordinator:
+  request-uri: "http://localhost:9123/accept?Content-Type=application/json"
+  source-pattern: "http://localhost:80/v1/transaction/"
+
 ---
 
 logging:

@@ -59,6 +59,17 @@ paths:
       responses:
         '201':
           description: Created
+  /transaction:
+    get:
+      tags:
+        - customer
+      operationId: getTransactions
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TransactionsList'
+
   '/transaction/{transactionId}':
     put:
       tags:
@@ -101,7 +112,7 @@ definitions:
         minimum: 100000000000000
       expirationDate:
         type: string
-        pattern: '^\d{2}\/\d{2}$'
+        pattern: '^\d{2}/\d{2}$'
       holder:
         type: string
         minLength: 1
@@ -131,6 +142,27 @@ definitions:
         type: integer
       message:
         type: string
+  TransactionsList:
+    type: array
+    items:
+      type: object
+      $ref: '#/definitions/TransactionView'
+  TransactionView:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      created:
+        type: string
+      status:
+        type: string
+        enum:
+          - UNKNOWN
+          - WAITING_FOR_BANK_RESPONSE
+          - PROCESSING
+          - SUCCESS
+          - FAIL
 parameters:
   InvoiceId:
     in: path

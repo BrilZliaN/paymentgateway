@@ -3,10 +3,9 @@ package ru.ifmo.practice.gateway.builder;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.ifmo.practice.gateway.helper.CreditCardValidator;
-
-import static org.junit.jupiter.api.Assertions.*;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 class CardBuilderTest {

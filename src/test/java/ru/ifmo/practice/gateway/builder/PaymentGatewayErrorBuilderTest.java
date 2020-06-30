@@ -1,13 +1,12 @@
 package ru.ifmo.practice.gateway.builder;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 class PaymentGatewayErrorBuilderTest {

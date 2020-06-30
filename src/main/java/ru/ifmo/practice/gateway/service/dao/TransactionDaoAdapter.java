@@ -13,6 +13,8 @@ import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -48,6 +50,16 @@ public class TransactionDaoAdapter {
         }
     }
 
+    public List<Transaction> getAllTransactions() {
+        try {
+            List<Transaction> list = new ArrayList<>();
+            transactionRepository.findAll().forEach(list::add);
+            return list;
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException, "Невозможно получить список транзакций");
+        }
+    }
+
     public Transaction getTransactionById(Long id) {
         try {
             return transactionRepository.findById(id).orElseThrow(ExceptionFactory::notFound);
@@ -60,12 +72,12 @@ public class TransactionDaoAdapter {
     Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);
         try {
-//            if (cardRepository.existsCardByNumber(card.getNumber())) {
-//                return cardRepository.findCardByNumber(card.getNumber());
-//            } else {
-//                return cardRepository.save(card);
-//            }
-            return cardRepository.save(card);
+            if (cardRepository.existsCardByNumber(card.getNumber())) {
+                return cardRepository.findCardByNumber(card.getNumber());
+            } else {
+                return cardRepository.save(card);
+            }
+            //return cardRepository.save(card);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
         }
