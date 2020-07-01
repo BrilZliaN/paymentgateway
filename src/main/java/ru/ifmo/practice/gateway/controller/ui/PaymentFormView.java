@@ -3,6 +3,7 @@ package ru.ifmo.practice.gateway.controller.ui;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
@@ -17,6 +18,7 @@ import ru.ifmo.practice.gateway.dto.entity.UserStorage;
 import java.util.List;
 import java.util.Objects;
 
+@Push
 @Slf4j
 @Route("payment")
 @ParentLayout(MainView.class)
@@ -38,7 +40,6 @@ public class PaymentFormView extends FormLayout implements HasUrlParameter<Strin
         this.invoiceInformationCard = new InvoiceInformationCard(userStorage);
         this.paymentFormLayout = new PaymentFormLayout(this::submitForm, userStorage);
         add(invoiceInformationCard, paymentFormLayout, errorLabel);
-
         invoiceInformationCard.update();
         toggleShow(userStorage.getInvoice() != null);
     }
