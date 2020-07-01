@@ -4,7 +4,10 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.page.Push;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.Route;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -20,8 +23,7 @@ import java.util.Objects;
 
 @Push
 @Slf4j
-@Route("payment")
-@ParentLayout(MainView.class)
+@Route(value = "payment", layout = MainView.class)
 public class PaymentFormView extends FormLayout implements HasUrlParameter<String> {
 
     private final CustomerApi customerApi;
