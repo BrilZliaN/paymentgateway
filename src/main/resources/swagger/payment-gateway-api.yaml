@@ -11,11 +11,15 @@ tags:
   - name: bank
     description: Bank-side actions
 schemes:
+  - http
   - https
 consumes:
   - application/json
 produces:
   - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
 paths:
   /invoice:
     post:
@@ -64,6 +68,8 @@ paths:
       tags:
         - bank
       operationId: updateTransactionStatus
+      security:
+        - basicAuth: []
       parameters:
         - $ref: '#/parameters/TransactionId'
         - in: body
@@ -74,6 +80,8 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: Unauthorized
 definitions:
   InvoicePostView:
     type: object
