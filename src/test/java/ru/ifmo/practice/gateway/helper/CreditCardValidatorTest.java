@@ -15,11 +15,11 @@ class CreditCardValidatorTest {
 
     CreditCardValidator creditCardValidator = new CreditCardValidator();
 
-    private static int TEST_NUMBER = 20;
-    private static int NUMBER_LENGTH = 16;
+    private static final int TEST_NUMBER = 20;
+    private static final int NUMBER_LENGTH = 16;
 
 
-    private static String BAD_CHARS = "!@#$%^&*()1234567890";
+    private static final String BAD_CHARS = "!@#$%^&*()1234567890";
 
     @Test
     void testCorrect() {
@@ -45,7 +45,7 @@ class CreditCardValidatorTest {
             Exception e = assertThrows(PaymentGatewayException.class, () -> {
                 creditCardValidator.validate(card);
             });
-            assertEquals(e.getMessage(), "неверный номер карты");
+            assertEquals("неверный номер карты", e.getMessage());
         }
 
         for (int id = 1; id <= TEST_NUMBER; id++) {
@@ -57,7 +57,7 @@ class CreditCardValidatorTest {
             Exception e = assertThrows(PaymentGatewayException.class, () -> {
                 creditCardValidator.validate(card);
             });
-            assertEquals(e.getMessage(), "номер карты должен содержать 16 символов");
+            assertEquals("номер карты должен содержать 16 символов", e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ class CreditCardValidatorTest {
             Exception e = assertThrows(PaymentGatewayException.class, () -> {
                 creditCardValidator.validate(card);
             });
-            assertEquals(e.getMessage(), "неверный формат имени владельца");
+            assertEquals("неверный формат имени владельца", e.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ class CreditCardValidatorTest {
             Exception e = assertThrows(PaymentGatewayException.class, () -> {
                 creditCardValidator.validate(card);
             });
-            assertEquals(e.getMessage(), "срок действия карты истек");
+            assertEquals("срок действия карты истек", e.getMessage());
         }
     }
 

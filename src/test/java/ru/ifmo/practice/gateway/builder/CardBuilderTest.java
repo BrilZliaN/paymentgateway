@@ -13,6 +13,7 @@ class CardBuilderTest {
     private static final long BASIC_NUMBER = 1000000000;
     private static final String BASIC_NAME = "JOHN SMITH ";
 
+
     @Test
     void test() {
         for (int id = 0; id < TEST_NUMBER; id++) {
@@ -22,9 +23,9 @@ class CardBuilderTest {
             String cvv = String.format("%03d", id);
             var creditCardView = new CreditCardView().number(number).holder(holder).expirationDate(date).cvv(cvv);
             var card = cardBuilder.build(creditCardView);
-            assertEquals(card.getNumber(), number);
-            assertEquals(card.getValid(), date);
-            assertEquals(card.getOwner(), holder);
+            assertEquals(number, card.getNumber());
+            assertEquals(date, card.getValid());
+            assertEquals(holder, card.getOwner());
         }
     }
 

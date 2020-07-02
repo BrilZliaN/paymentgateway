@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class InvoiceViewBuilderTest {
 
     private final Random random = new Random(System.currentTimeMillis());
-    private final int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
     private final InvoiceViewBuilder invoiceViewBuilder = new InvoiceViewBuilder();
 
     @Test
@@ -24,8 +24,8 @@ class InvoiceViewBuilderTest {
             invoice.setCreated(dateTime);
             invoice.setSum(sum);
             var invoiceView = invoiceViewBuilder.build(invoice);
-            assertEquals(invoiceView.getId(), i);
-            assertEquals(invoiceView.getSum(), sum);
+            assertEquals(i, invoiceView.getId());
+            assertEquals(sum, invoiceView.getSum());
         }
     }
 

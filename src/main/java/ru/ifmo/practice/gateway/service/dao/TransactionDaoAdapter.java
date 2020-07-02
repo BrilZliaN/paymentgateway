@@ -14,6 +14,8 @@ import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -55,6 +57,16 @@ public class TransactionDaoAdapter {
             return transactionRepository.findById(id).orElseThrow(ExceptionFactory::notFound);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
+        }
+    }
+
+    public List<Transaction> getAllTransactions() {
+        try {
+            List<Transaction> list = new ArrayList<>();
+            transactionRepository.findAll().forEach(list::add);
+            return list;
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException, "Невозможно получить список транзакций");
         }
     }
 

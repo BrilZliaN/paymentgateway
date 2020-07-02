@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TransactionBuilderTest {
 
-    private final static int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
     private final TransactionBuilder builder = new TransactionBuilder();
     private final CardDataGenerator cardDataGenerator = new CardDataGenerator();
 
@@ -24,8 +24,8 @@ class TransactionBuilderTest {
             var card = generateCard(i + 1);
             var invoice = generateInvoice();
             var transaction = builder.build(card, invoice);
-            assertEquals(transaction.getCard(), card);
-            assertEquals(transaction.getInvoice(), invoice);
+            assertEquals(card, transaction.getCard());
+            assertEquals(invoice, transaction.getInvoice());
             assertTrue(transaction.getStatusDate().isEqual(LocalDateTime.now())
                     || transaction.getStatusDate().isBefore(LocalDateTime.now()));
         }
@@ -39,8 +39,8 @@ class TransactionBuilderTest {
             var transaction = builder.build(card, invoice);
             var time = transaction.getStatusDate();
             builder.update(transaction, new TransactionStatusView().answerCode("testing"));
-            assertEquals(transaction.getStatusCode(), "testing");
-            assertTrue(transaction.getStatusDate().isEqual(LocalDateTime.now())
+            assertEquals( "testing", transaction.getStatusCode());
+            assertTrue(transaction.getStatusDate().isEqual(time)
                     || transaction.getStatusDate().isAfter(time));
         }
     }

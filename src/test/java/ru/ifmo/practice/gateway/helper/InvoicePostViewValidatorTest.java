@@ -22,7 +22,7 @@ public class InvoicePostViewValidatorTest {
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             invoicePostViewValidator.validate(invoice);
         });
-        assertEquals(exception.getHttpStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
     @Test

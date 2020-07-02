@@ -19,7 +19,7 @@ class InvoiceBuilderTest {
             double sum = Math.abs(random.nextInt());
             var invoicePostView = new InvoicePostView().sum(sum);
             var invoice = invoiceBuilder.build(invoicePostView);
-            assertEquals(invoice.getSum(), sum);
+            assertEquals(sum, invoice.getSum());
         }
     }
 
