@@ -1,6 +1,7 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,15 +14,16 @@ import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class RequestPaymentOperation {
 
     @Value("${coordinator.request-uri}")
-    private String URI;
+    private String uri;
 
     @Value("${coordinator.source-pattern}")
-    private String SOURCE;
+    private String source;
 
     private final TransactionDaoAdapter transactionDaoAdapter;
 
@@ -29,8 +31,8 @@ public class RequestPaymentOperation {
         updateTransactionStatus(transaction, TransactionReadinessView.TypeEnum.PROCESSING);
         try {
             var restTemplate = new RestTemplate();
-            var paymentData = new PaymentData(transaction, SOURCE + transaction.getId());
-            var result = restTemplate.postForEntity(URI, paymentData, TransactionReadinessView.class);
+            var paymentData = new PaymentData(transaction, source + transaction.getId());
+            var result = restTemplate.postForEntity(uri, paymentData, TransactionReadinessView.class);
             if (result.getStatusCode() != HttpStatus.OK) {
                 updateTransactionStatus(transaction, TransactionReadinessView.TypeEnum.FAIL);
                 throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "платежная система отказала в транзакции");
@@ -38,6 +40,7 @@ public class RequestPaymentOperation {
                 updateTransactionStatus(transaction, TransactionReadinessView.TypeEnum.WAITING_FOR_BANK_RESPONSE);
             }
         } catch (RestClientException e) {
+            log.error(String.format("Can't send data to bank, transaction %d will fail", transaction.getId()), e);
             updateTransactionStatus(transaction, TransactionReadinessView.TypeEnum.FAIL);
 //            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "ошибка передачи транзакции");
         }

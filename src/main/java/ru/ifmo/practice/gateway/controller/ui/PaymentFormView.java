@@ -3,7 +3,6 @@ package ru.ifmo.practice.gateway.controller.ui;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
@@ -21,7 +20,6 @@ import ru.ifmo.practice.gateway.dto.entity.UserStorage;
 import java.util.List;
 import java.util.Objects;
 
-@Push
 @Slf4j
 @Route(value = "payment", layout = MainView.class)
 public class PaymentFormView extends FormLayout implements HasUrlParameter<String> {

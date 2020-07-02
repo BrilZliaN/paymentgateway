@@ -28,3 +28,5 @@ server.log*
 /webpack.generated.js
 /package-lock.json
 /node_modules/
+/pnpmfile.js
+/pnpm-lock.yaml

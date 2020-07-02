@@ -15,7 +15,7 @@ spring:
       maximum-pool-size: 3
 logging:
   level:
-    root: TRACE
+    root: INFO
 vaadin:
   compatibilityMode: false
 coordinator:

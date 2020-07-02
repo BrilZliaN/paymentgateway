@@ -5,7 +5,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.Route;
 import org.springframework.web.client.RestClientException;
 import ru.ifmo.practice.gateway.client.CustomerApi;
@@ -16,7 +15,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@Push
 @Route(value = "status", layout = MainView.class)
 public class PaymentStatusView extends FormLayout {
 
