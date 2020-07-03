@@ -10,9 +10,9 @@ import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 @RequiredArgsConstructor
 public class GetTransactionsOperation {
 
-    private TransactionDaoAdapter transactionDaoAdapter;
+    private final TransactionDaoAdapter transactionDaoAdapter;
 
-    private TransactionsListBuilder transactionsListBuilder;
+    private final TransactionsListBuilder transactionsListBuilder;
 
     public TransactionsList process() {
         return transactionsListBuilder.build(transactionDaoAdapter.getAllTransactions());

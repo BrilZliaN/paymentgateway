@@ -1,6 +1,7 @@
 package ru.ifmo.practice.gateway.service.dao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
@@ -13,9 +14,11 @@ import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TransactionDaoAdapter {
@@ -50,6 +53,14 @@ public class TransactionDaoAdapter {
         }
     }
 
+    public Transaction getTransactionById(Long id) {
+        try {
+            return transactionRepository.findById(id).orElseThrow(ExceptionFactory::notFound);
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException);
+        }
+    }
+
     public List<Transaction> getAllTransactions() {
         try {
             List<Transaction> list = new ArrayList<>();
@@ -60,9 +71,9 @@ public class TransactionDaoAdapter {
         }
     }
 
-    public Transaction getTransactionById(Long id) {
+    public Transaction getTransactionByInvoiceId(Long id) {
         try {
-            return transactionRepository.findById(id).orElseThrow(ExceptionFactory::notFound);
+            return transactionRepository.findByInvoiceId(id).orElseThrow(ExceptionFactory::notFound);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
         }
@@ -72,12 +83,13 @@ public class TransactionDaoAdapter {
     Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);
         try {
-            if (cardRepository.existsCardByNumber(card.getNumber())) {
-                return cardRepository.findCardByNumber(card.getNumber());
+            if (cardRepository.existsCardByNumberAndOwnerAndValid(card.getNumber(), card.getOwner(), card.getValid())) {
+                return cardRepository
+                        .findCardByNumberAndOwnerAndValid(card.getNumber(), card.getOwner(), card.getValid());
             } else {
+                card.setCreated(LocalDateTime.now());
                 return cardRepository.save(card);
             }
-            //return cardRepository.save(card);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
         }

@@ -24,19 +24,22 @@ public class InvoiceController implements InvoiceApiDelegate {
     private final CreateTransactionOperation createTransactionOperation;
     private final RequestPaymentOperation requestPaymentOperation;
 
-    public ResponseEntity<InvoiceView> addInvoice(InvoicePostView invoicePostView) {
+    @PostMapping("/invoice")
+    public ResponseEntity<InvoiceView> addInvoice(@RequestBody InvoicePostView invoicePostView) {
         var invoiceView = createInvoiceOperation.process(invoicePostView);
         return new ResponseEntity<>(invoiceView, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<TransactionReadinessView> getInvoiceStatus(Long invoiceId) {
+    @GetMapping("/invoice/{invoiceId}")
+    public ResponseEntity<TransactionReadinessView> getInvoiceStatus(@PathVariable Long invoiceId) {
         var transaction = getTransactionOperation.process(invoiceId);
         var view = new TransactionReadinessView();
         view.setType(TransactionReadinessView.TypeEnum.valueOf(transaction.getStatusCode()));
         return ResponseEntity.ok(view);
     }
 
-    public ResponseEntity<Void> createTransaction(Long invoiceId, CreditCardView creditCard) {
+    @PostMapping("/invoice/{invoiceId}")
+    public ResponseEntity<Void> createTransaction(@PathVariable Long invoiceId, @RequestBody CreditCardView creditCard) {
         var transaction = createTransactionOperation.process(invoiceId, creditCard);
         requestPaymentOperation.process(transaction);
         return new ResponseEntity<>(HttpStatus.CREATED);

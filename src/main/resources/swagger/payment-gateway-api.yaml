@@ -3,14 +3,14 @@ info:
   description: "Payment gateway sample application (Solanteq practice task)"
   version: "1.0"
   title: "Payment Gateway API"
-host: "gateway.solanteq.com"
-basePath: "/v1"
+host: "localhost:8080"
 tags:
   - name: customer
     description: Customer-side actions
   - name: bank
     description: Bank-side actions
 schemes:
+  - http
   - https
 consumes:
   - application/json
@@ -69,7 +69,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/TransactionsList'
-
   '/transaction/{transactionId}':
     put:
       tags:
@@ -103,16 +102,13 @@ definitions:
   CreditCardView:
     type: object
     properties:
-      invoiceId:
-        type: integer
-        format: int64
       number:
         type: integer
         format: int64
         minimum: 100000000000000
       expirationDate:
         type: string
-        pattern: '^\d{2}/\d{2}$'
+        pattern: '^\d{2}\/\d{2}$'
       holder:
         type: string
         minLength: 1
@@ -148,21 +144,27 @@ definitions:
       type: object
       $ref: '#/definitions/TransactionView'
   TransactionView:
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int64
-      created:
-        type: string
-      status:
-        type: string
-        enum:
-          - UNKNOWN
-          - WAITING_FOR_BANK_RESPONSE
-          - PROCESSING
-          - SUCCESS
-          - FAIL
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        invoiceId:
+          type: integer
+          format: int64
+        sum:
+          type: number
+          format: double
+        created:
+          type: string
+        status:
+          type: string
+          enum:
+            - UNKNOWN
+            - WAITING_FOR_BANK_RESPONSE
+            - PROCESSING
+            - SUCCESS
+            - FAIL
 parameters:
   InvoiceId:
     in: path

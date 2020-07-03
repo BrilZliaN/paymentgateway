@@ -50,7 +50,7 @@ public class CreateTransactionOperationTest {
     @Test
     public void createCorrectTransaction() {
         var creditCardView = transactionDataGenerator.generateCreditCardView();
-        long invoiceId = creditCardView.getInvoiceId();
+        long invoiceId = Math.abs(random.nextInt());
         var invoice = transactionDataGenerator.generateInvoice(invoiceId);
         var transaction = transactionDataGenerator.constructTransaction(invoice, creditCardView);
 
@@ -72,8 +72,7 @@ public class CreateTransactionOperationTest {
     @Test
     public void createTransactionWithIncorrectInvoiceId() {
         var creditCardView = transactionDataGenerator.generateCreditCardView();
-        creditCardView.setInvoiceId(creditCardView.getInvoiceId() * (-1));
-        long invoiceId = creditCardView.getInvoiceId();
+        long invoiceId = Math.abs(random.nextInt()) * (-1);
         var invoice = transactionDataGenerator.generateInvoice(invoiceId);
 
         processDataFailure(invoice, creditCardView);
@@ -82,7 +81,7 @@ public class CreateTransactionOperationTest {
     @Test
     public void createTransactionWithIncorrectCreditData() {
         var creditCardView = transactionDataGenerator.generateCreditCardView();
-        long invoiceId = creditCardView.getInvoiceId();
+        long invoiceId = Math.abs(random.nextInt()) * (-1);
         creditCardView.setNumber(creditCardView.getNumber() + 1);
         var invoice = transactionDataGenerator.generateInvoice(invoiceId);
 
@@ -108,7 +107,7 @@ public class CreateTransactionOperationTest {
     @Test
     public void testDatabaseError() {
         var creditCardView = transactionDataGenerator.generateCreditCardView();
-        long invoiceId = creditCardView.getInvoiceId();
+        long invoiceId = Math.abs(random.nextInt());
         var invoice = transactionDataGenerator.generateInvoice(invoiceId);
         var transaction = transactionDataGenerator.constructTransaction(invoice, creditCardView);
 
@@ -134,7 +133,7 @@ public class CreateTransactionOperationTest {
     @Test
     public void testServerError() {
         var creditCardView = transactionDataGenerator.generateCreditCardView();
-        long invoiceId = creditCardView.getInvoiceId();
+        long invoiceId = Math.abs(random.nextInt());
         var invoice = transactionDataGenerator.generateInvoice(invoiceId);
         var transaction = transactionDataGenerator.constructTransaction(invoice, creditCardView);
 

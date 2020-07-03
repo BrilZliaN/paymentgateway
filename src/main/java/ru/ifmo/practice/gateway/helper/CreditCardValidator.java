@@ -43,14 +43,21 @@ public class CreditCardValidator {
         }
     }
 
-    private void validateLuhn(String cardNo) {
-        int nDigits = cardNo.length();
+    private void validateLuhn(String cardNumber) {
+        var result = CreditCardValidator.validateCardNumber(cardNumber);
+        if (!result) {
+            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "неверный номер карты");
+        }
+    }
+
+    public static boolean validateCardNumber(String cardNumber) {
+        int nDigits = cardNumber.length();
 
         int nSum = 0;
         boolean isSecond = false;
         for (int i = nDigits - 1; i >= 0; i--) {
 
-            int d = cardNo.charAt(i) - '0';
+            int d = cardNumber.charAt(i) - '0';
 
             if (isSecond)
                 d = d * 2;
@@ -63,9 +70,7 @@ public class CreditCardValidator {
 
             isSecond = !isSecond;
         }
-        if (nSum % 10 != 0) {
-            throw ExceptionFactory.newException(HttpStatus.BAD_REQUEST, "неверный номер карты");
-        }
+        return nSum % 10 == 0;
     }
 
 }

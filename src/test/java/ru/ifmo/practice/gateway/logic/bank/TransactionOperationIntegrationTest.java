@@ -12,9 +12,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.ifmo.practice.gateway.api.models.InvoicePostView;
 import ru.ifmo.practice.gateway.api.models.InvoiceView;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
+import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 import ru.ifmo.practice.gateway.helper.TransactionDataGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
@@ -31,13 +34,16 @@ public class TransactionOperationIntegrationTest {
     private UpdateTransactionStatusOperation updateTransactionStatusOperation;
 
     @Autowired
+    private GetTransactionsOperation getTransactionsOperation;
+
+    @Autowired
     private CreateInvoiceOperation createInvoiceOperation;
 
     private final Random random = new Random(System.currentTimeMillis());
 
     private final TransactionDataGenerator transactionDataGenerator = new TransactionDataGenerator();
 
-    private long currentInvoiceId;
+    private static final int LIST_SIZE = 10;
 
     private InvoiceView createInvoice() {
         double sum = Math.abs(random.nextInt());
@@ -56,7 +62,7 @@ public class TransactionOperationIntegrationTest {
         Assertions.assertEquals(creditCardView.getExpirationDate(), transaction.getCard().getValid());
         Assertions.assertEquals(creditCardView.getHolder(), transaction.getCard().getOwner());
 
-        var getTransaction = getTransactionOperation.process(transaction.getId());
+        var getTransaction = getTransactionOperation.process(transaction.getInvoice().getId());
 
         Assertions.assertEquals(transaction.getId(), getTransaction.getId());
         Assertions.assertEquals(transaction.getInvoice().getId(), getTransaction.getInvoice().getId());
@@ -101,9 +107,9 @@ public class TransactionOperationIntegrationTest {
         var creditCardView = transactionDataGenerator.generateCreditCardView(invoiceView.getId());
         var transaction = createTransactionOperation.process(invoiceView.getId(), creditCardView);
 
-        var status = new TransactionStatusView().answerCode("next_status");
+        var status = new TransactionStatusView().answerCode("SUCCESS");
         updateTransactionStatusOperation.process(transaction.getId(), status);
-        var newTransaction = getTransactionOperation.process(transaction.getId());
+        var newTransaction = getTransactionOperation.process(transaction.getInvoice().getId());
 
         Assertions.assertEquals(transaction.getId(), newTransaction.getId());
         Assertions.assertEquals(transaction.getCard().getId(), newTransaction.getCard().getId());
@@ -117,7 +123,7 @@ public class TransactionOperationIntegrationTest {
         var invoiceView = createInvoice();
         var creditCardView = transactionDataGenerator.generateCreditCardView(invoiceView.getId());
         var transaction = createTransactionOperation.process(invoiceView.getId(), creditCardView);
-        var status = new TransactionStatusView().answerCode("next_status");
+        var status = new TransactionStatusView().answerCode("PROCESSING");
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             updateTransactionStatusOperation.process(transaction.getId() + 10, status);
         });
@@ -129,11 +135,33 @@ public class TransactionOperationIntegrationTest {
         var invoiceView = createInvoice();
         var creditCardView = transactionDataGenerator.generateCreditCardView(invoiceView.getId());
         var transaction = createTransactionOperation.process(invoiceView.getId(), creditCardView);
-        var status = new TransactionStatusView().answerCode("next_status");
+        var status = new TransactionStatusView().answerCode("PROCESSING");
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             updateTransactionStatusOperation.process(transaction.getId() * (-1), status);
         });
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    public void createManyAndGetList() {
+        List<Transaction> transactions = new ArrayList<>();
+        var start = getTransactionsOperation.process().size();
+        for (int i = 0; i < 10; i++) {
+            var invoiceView = createInvoice();
+            var creditCardView = transactionDataGenerator.generateCreditCardView(invoiceView.getId());
+            var transaction = createTransactionOperation.process(invoiceView.getId(), creditCardView);
+            transactions.add(transaction);
+        }
+        var result = getTransactionsOperation.process();
+        Assertions.assertEquals(transactions.size() + start, result.size());
+        for (int i = 0; i < transactions.size(); i++) {
+            var transaction = transactions.get(i);
+            var view = result.get(start + i);
+            Assertions.assertEquals(transaction.getId(), view.getId());
+            Assertions.assertEquals(transaction.getInvoice().getSum(), view.getSum());
+            Assertions.assertEquals(transaction.getInvoice().getId(), view.getInvoiceId());
+            Assertions.assertEquals(transaction.getStatusCode(), view.getStatus().toString());
+        }
     }
 
 }

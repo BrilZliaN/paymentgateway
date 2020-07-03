@@ -16,6 +16,7 @@ public class TransactionBuilder {
         transaction.setCard(card);
         transaction.setInvoice(invoice);
         transaction.setStatusDate(LocalDateTime.now());
+        transaction.setCreated(LocalDateTime.now());
         return transaction;
     }
 

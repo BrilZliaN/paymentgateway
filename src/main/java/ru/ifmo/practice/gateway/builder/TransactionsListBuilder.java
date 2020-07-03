@@ -22,6 +22,8 @@ public class TransactionsListBuilder {
         result.setId(transaction.getId());
         result.setCreated(transaction.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         result.setStatus(TransactionView.StatusEnum.valueOf(transaction.getStatusCode()));
+        result.setInvoiceId(transaction.getInvoice().getId());
+        result.setSum(transaction.getInvoice().getSum());
         return result;
     }
 

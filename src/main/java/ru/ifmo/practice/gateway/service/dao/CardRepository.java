@@ -5,8 +5,8 @@ import ru.ifmo.practice.gateway.dto.entity.Card;
 
 public interface CardRepository extends CrudRepository<Card, Long> {
 
-    Card findCardByNumber(Long number);
+    Card findCardByNumberAndOwnerAndValid(Long number, String owner, String valid);
 
-    boolean existsCardByNumber(Long number);
+    boolean existsCardByNumberAndOwnerAndValid(Long number, String owner, String valid);
 
 }

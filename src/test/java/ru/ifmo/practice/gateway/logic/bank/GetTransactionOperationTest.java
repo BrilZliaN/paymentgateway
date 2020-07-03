@@ -19,8 +19,6 @@ import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {GetTransactionOperation.class, IdValidator.class})
 public class GetTransactionOperationTest {
@@ -42,9 +40,9 @@ public class GetTransactionOperationTest {
         final Transaction transaction = new Transaction();
         transaction.setId(id);
         transaction.setCreated(LocalDateTime.now());
-        Mockito.when(transactionDaoAdapter.getTransactionById(id)).thenReturn(transaction);
+        Mockito.when(transactionDaoAdapter.getTransactionByInvoiceId(id)).thenReturn(transaction);
         var result = getTransactionOperation.process(id);
-        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionById(id);
+        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionByInvoiceId(id);
         Assertions.assertEquals(transaction.getId(), result.getId());
         Assertions.assertEquals(result.getCreated(), transaction.getCreated());
     }
@@ -55,18 +53,18 @@ public class GetTransactionOperationTest {
         final Transaction transaction = new Transaction();
         transaction.setId(id);
         transaction.setCreated(LocalDateTime.now());
-        Mockito.when(transactionDaoAdapter.getTransactionById(id)).thenReturn(transaction);
+        Mockito.when(transactionDaoAdapter.getTransactionByInvoiceId(id)).thenReturn(transaction);
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             getTransactionOperation.process(id);
         });
-        Mockito.verify(transactionDaoAdapter, Mockito.times(0)).getTransactionById(id);
+        Mockito.verify(transactionDaoAdapter, Mockito.times(0)).getTransactionByInvoiceId(id);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
     @Test
     public void testDatabaseException() {
         long id = Math.abs(random.nextInt());
-        Mockito.when(transactionDaoAdapter.getTransactionById(id)).thenThrow(ExceptionFactory.wrap(
+        Mockito.when(transactionDaoAdapter.getTransactionByInvoiceId(id)).thenThrow(ExceptionFactory.wrap(
                 new DataAccessException("error") {
                     @Override
                     public String getMessage() {
@@ -76,18 +74,18 @@ public class GetTransactionOperationTest {
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             getTransactionOperation.process(id);
         });
-        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionById(id);
+        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionByInvoiceId(id);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
     @Test
     public void testServerError() {
         long id = Math.abs(random.nextInt());
-        Mockito.when(transactionDaoAdapter.getTransactionById(id)).thenThrow(ExceptionFactory.wrap(new Exception()));
+        Mockito.when(transactionDaoAdapter.getTransactionByInvoiceId(id)).thenThrow(ExceptionFactory.wrap(new Exception()));
         var exception = Assertions.assertThrows(PaymentGatewayException.class, () -> {
             getTransactionOperation.process(id);
         });
-        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionById(id);
+        Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getTransactionByInvoiceId(id);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getHttpStatus());
     }
 }

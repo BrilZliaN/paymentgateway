@@ -10,11 +10,10 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
 class InvoiceViewBuilderTest {
 
     private final Random random = new Random(System.currentTimeMillis());
-    private final int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
     private final InvoiceViewBuilder invoiceViewBuilder = new InvoiceViewBuilder();
 
     @Test

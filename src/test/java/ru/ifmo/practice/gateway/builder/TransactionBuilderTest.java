@@ -42,7 +42,7 @@ class TransactionBuilderTest {
             var time = transaction.getStatusDate();
             builder.update(transaction, new TransactionStatusView().answerCode("testing"));
             assertEquals(transaction.getStatusCode(), "testing");
-            assertTrue(transaction.getStatusDate().isEqual(LocalDateTime.now())
+            assertTrue(transaction.getStatusDate().isEqual(time)
                     || transaction.getStatusDate().isAfter(time));
         }
     }
