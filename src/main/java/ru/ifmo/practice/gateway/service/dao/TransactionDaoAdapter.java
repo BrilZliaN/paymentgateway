@@ -1,9 +1,11 @@
 package ru.ifmo.practice.gateway.service.dao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
+import ru.ifmo.practice.gateway.api.models.TransactionReadinessView;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.builder.CardBuilder;
 import ru.ifmo.practice.gateway.builder.TransactionBuilder;
@@ -12,7 +14,11 @@ import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TransactionDaoAdapter {
@@ -24,12 +30,14 @@ public class TransactionDaoAdapter {
     private final CardBuilder cardBuilder;
 
     @Transactional
-    public void createTransaction(Long invoiceId, CreditCardView creditCardView) {
+    public Transaction createTransaction(Long invoiceId, CreditCardView creditCardView) {
         final var invoice = invoiceDaoAdapter.getInvoiceById(invoiceId);
         final var card = addCard(creditCardView);
-        final var transaction = transactionBuilder.build(card, invoice);
+        var transaction = transactionBuilder.build(card, invoice);
+        transactionBuilder.update(transaction,
+                new TransactionStatusView().answerCode(TransactionReadinessView.TypeEnum.PROCESSING.toString()));
         try {
-            transactionRepository.save(transaction);
+            return transactionRepository.save(transaction);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException, "Невозможно создать транзакцию");
         }
@@ -53,11 +61,35 @@ public class TransactionDaoAdapter {
         }
     }
 
+    public List<Transaction> getAllTransactions() {
+        try {
+            List<Transaction> list = new ArrayList<>();
+            transactionRepository.findAll().forEach(list::add);
+            return list;
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException, "Невозможно получить список транзакций");
+        }
+    }
+
+    public Transaction getTransactionByInvoiceId(Long id) {
+        try {
+            return transactionRepository.findByInvoiceId(id).orElseThrow(ExceptionFactory::notFound);
+        } catch (DataAccessException dataAccessException) {
+            throw ExceptionFactory.wrap(dataAccessException);
+        }
+    }
+
     @Transactional(value = Transactional.TxType.SUPPORTS)
     Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);
         try {
-            return cardRepository.save(card);
+            if (cardRepository.existsCardByNumberAndOwnerAndValid(card.getNumber(), card.getOwner(), card.getValid())) {
+                return cardRepository
+                        .findCardByNumberAndOwnerAndValid(card.getNumber(), card.getOwner(), card.getValid());
+            } else {
+                card.setCreated(LocalDateTime.now());
+                return cardRepository.save(card);
+            }
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
         }
