@@ -5,8 +5,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
-import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.web.client.RestClientException;
 import ru.ifmo.practice.gateway.client.CustomerApi;
@@ -17,15 +15,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@Push
-@Route("status")
-@ParentLayout(MainView.class)
+@Route(value = "status", layout = MainView.class)
 public class PaymentStatusView extends FormLayout {
 
     private final CustomerApi customerApi;
     private final UserStorage userStorage;
     private final InvoiceInformationCard invoiceInformationCard;
-    private final Label bankAnswerLabel = new Label("Ожидание платежных данных");
+    private final Label bankAnswerLabel = new Label("");
 
     public PaymentStatusView(CustomerApi customerApi, UserStorage userStorage) {
         this.customerApi = customerApi;
@@ -35,6 +31,7 @@ public class PaymentStatusView extends FormLayout {
                         new Label("Статус последней транзакции по данной покупке"), bankAnswerLabel));
         ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
         executorService.scheduleAtFixedRate(this::update, 5, 30, TimeUnit.SECONDS);
+        updateStatus();
     }
 
     private void update() {
@@ -72,7 +69,7 @@ public class PaymentStatusView extends FormLayout {
                 status = "Платеж не прошел";
                 break;
             case UNKNOWN:
-                status = "Неизвестно";
+                status = "Ожидание платежных данных";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + userStorage.getStatus().getType());

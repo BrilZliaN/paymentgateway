@@ -3,10 +3,12 @@ package ru.ifmo.practice.gateway.controller.ui;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.Route;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
 import ru.ifmo.practice.gateway.builder.InvoicePostViewBuilder;
 import ru.ifmo.practice.gateway.client.CustomerApi;
@@ -18,8 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@Route("payment")
-@ParentLayout(MainView.class)
+@Route(value = "payment", layout = MainView.class)
 public class PaymentFormView extends FormLayout implements HasUrlParameter<String> {
 
     private final CustomerApi customerApi;
@@ -38,7 +39,6 @@ public class PaymentFormView extends FormLayout implements HasUrlParameter<Strin
         this.invoiceInformationCard = new InvoiceInformationCard(userStorage);
         this.paymentFormLayout = new PaymentFormLayout(this::submitForm, userStorage);
         add(invoiceInformationCard, paymentFormLayout, errorLabel);
-
         invoiceInformationCard.update();
         toggleShow(userStorage.getInvoice() != null);
     }
@@ -47,13 +47,9 @@ public class PaymentFormView extends FormLayout implements HasUrlParameter<Strin
         var id = userStorage.getInvoice().getId();
         try {
             customerApi.createTransaction(id, creditCardView);
-        } catch (HttpClientErrorException clientException) {
-            log.error("Client misconfiguration", clientException);
-            new Notification("Невозможно отправить форму").open();
-            return;
-        } catch (HttpServerErrorException serverException) {
-            var response = serverException.getResponseBodyAsString();
-            new Notification(String.format("Ошибка обработки данных! %s", response)).open();
+        } catch (HttpStatusCodeException statusCodeException) {
+            var response = statusCodeException.getResponseBodyAsString();
+            new Notification(String.format("Ошибка обработки данных!%n%s", response)).open();
             return;
         }
         this.getUI().ifPresent(ui -> ui.navigate(PaymentStatusView.class));
