@@ -26,3 +26,5 @@ target/
 /webpack.generated.js
 /package-lock.json
 /node_modules/
+
+server.log*

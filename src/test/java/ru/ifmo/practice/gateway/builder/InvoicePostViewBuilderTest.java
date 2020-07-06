@@ -2,15 +2,19 @@ package ru.ifmo.practice.gateway.builder;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InvoicePostViewBuilderTest {
 
-    private final InvoicePostViewBuilder builder = new InvoicePostViewBuilder();
+    private final InvoicePostViewBuilder invoicePostViewBuilder = new InvoicePostViewBuilder();
 
     @Test
     public void test() {
-        var view = builder.build(100d);
-        assertEquals(100d, view.getSum());
+        double sum = Math.abs(new Random().nextInt());
+        var result = invoicePostViewBuilder.build(sum);
+        assertEquals(sum, result.getSum());
     }
+
 }

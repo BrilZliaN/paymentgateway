@@ -8,16 +8,23 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        dialect: "org.hibernate.dialect.MySQL8Dialect"
+        dialect: "org.hibernate.dialect.MySQL57Dialect"
   datasource:
     hikari:
       minimum-idle: 1
       maximum-pool-size: 3
 logging:
   level:
-    root: DEBUG
+    root: INFO
 vaadin:
   compatibilityMode: false
+coordinator:
+  request-uri: "http://localhost:9123/accept?Content-Type=application/json"
+  source-pattern: "http://localhost:80/v1/transaction/"
+security:
+  acquirer:
+    username: SolanteqAcquirer
+    password: q123456789?
 ---
 
 server:
@@ -27,12 +34,16 @@ spring:
   datasource:
     url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
     username: "test"
-    password: "test"
+    password: "12345"
   jpa:
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+coordinator:
+  request-uri: "http://localhost:9123/accept?Content-Type=application/json"
+  source-pattern: "http://localhost:80/v1/transaction/"
 
 ---
 
@@ -48,6 +59,12 @@ spring:
   datasource:
     url: "jdbc:mysql://127.0.0.1:3306/test?useSSL=false&characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"
     username: "test"
-    password: "goodpassword"
+    password: "12345"
   jpa:
     show-sql: false
+    hibernate:
+      use-new-id-generator-mappings: false
+
+coordinator:
+  request-uri: "http://localhost:9123/accept?Content-Type=application/json"
+  source-pattern: "http://localhost:80/v1/transaction/"
