@@ -1,19 +1,17 @@
 package ru.ifmo.practice.gateway.helper;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.ifmo.practice.gateway.api.models.InvoicePostView;
-
-import javax.swing.*;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InvoicePostViewValidatorTest {
 
     private final InvoicePostViewValidator invoicePostViewValidator = new InvoicePostViewValidator();

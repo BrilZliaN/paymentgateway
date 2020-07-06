@@ -1,7 +1,9 @@
 package ru.ifmo.practice.gateway.builder;
 
-import org.hibernate.resource.transaction.spi.TransactionStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.ifmo.practice.gateway.api.models.TransactionView;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
 import ru.ifmo.practice.gateway.dto.entity.Transaction;
 
@@ -10,29 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ru.ifmo.practice.gateway.api.models.TransactionView;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 public class TransactionsListBuilderTest {
 
     private static final int LIST_SIZE = 10;
     private static final Random random = new Random();
     private final TransactionsListBuilder transactionsListBuilder = new TransactionsListBuilder();
-    @Test
-    public void test() {
-        var list = generateList();
-        var result = transactionsListBuilder.build(list);
-        assertEquals(list.size(), result.size());
-        for (int i = 0; i < list.size(); i++) {
-            var expected = list.get(i);
-            var actual = result.get(i);
-            assertEquals(expected.getId(), actual.getId());
-            assertEquals(expected.getStatusCode(), actual.getStatus().toString());
-            assertEquals(expected.getInvoice().getId(), actual.getInvoiceId());
-            assertEquals(expected.getInvoice().getSum(), actual.getSum());
-        }
-    }
 
     public static List<Transaction> generateList() {
         List<Transaction> list = new ArrayList<>();
@@ -49,6 +36,21 @@ public class TransactionsListBuilderTest {
             list.add(transaction);
         }
         return list;
+    }
+
+    @Test
+    public void test() {
+        var list = generateList();
+        var result = transactionsListBuilder.build(list);
+        assertEquals(list.size(), result.size());
+        for (int i = 0; i < list.size(); i++) {
+            var expected = list.get(i);
+            var actual = result.get(i);
+            assertEquals(expected.getId(), actual.getId());
+            assertEquals(expected.getStatusCode(), actual.getStatus().toString());
+            assertEquals(expected.getInvoice().getId(), actual.getInvoiceId());
+            assertEquals(expected.getInvoice().getSum(), actual.getSum());
+        }
     }
 
 }

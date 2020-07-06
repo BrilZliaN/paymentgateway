@@ -1,14 +1,12 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.api.models.InvoicePostView;
 import ru.ifmo.practice.gateway.api.models.InvoiceView;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
@@ -20,30 +18,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TransactionOperationIntegrationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
+    private final TransactionDataGenerator transactionDataGenerator = new TransactionDataGenerator();
     @Autowired
     private GetTransactionOperation getTransactionOperation;
-
     @Autowired
     private CreateTransactionOperation createTransactionOperation;
-
     @Autowired
     private UpdateTransactionStatusOperation updateTransactionStatusOperation;
-
     @Autowired
     private GetTransactionsOperation getTransactionsOperation;
-
     @Autowired
     private CreateInvoiceOperation createInvoiceOperation;
-
-    private final Random random = new Random(System.currentTimeMillis());
-
-    private final TransactionDataGenerator transactionDataGenerator = new TransactionDataGenerator();
-
-    private static final int LIST_SIZE = 10;
 
     private InvoiceView createInvoice() {
         double sum = Math.abs(random.nextInt());

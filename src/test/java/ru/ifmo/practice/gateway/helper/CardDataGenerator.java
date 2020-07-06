@@ -7,12 +7,10 @@ import java.util.Random;
 
 public class CardDataGenerator {
 
-    private final Random random = new Random(System.currentTimeMillis());
-
     private static final String[] NAMES = {"FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH",
             "SIXTH", "SEVENTH", "EIGHT", "NINTH", "TENTH"};
-
     private static final int BASIC_NUMBER_LENGTH = 16;
+    private final Random random = new Random(System.currentTimeMillis());
 
     public String generateDate(int shift) {
         Calendar calendar = Calendar.getInstance();

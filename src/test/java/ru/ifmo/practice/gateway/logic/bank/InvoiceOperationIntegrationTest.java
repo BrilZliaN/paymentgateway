@@ -1,11 +1,11 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.api.models.InvoicePostView;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 
@@ -14,17 +14,15 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class InvoiceOperationIntegrationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
     @Autowired
     private CreateInvoiceOperation createInvoiceOperation;
-
     @Autowired
     private GetInvoiceOperation getInvoiceOperation;
-
-    private final Random random = new Random(System.currentTimeMillis());
 
     @Test
     public void testCreateAndGet() {

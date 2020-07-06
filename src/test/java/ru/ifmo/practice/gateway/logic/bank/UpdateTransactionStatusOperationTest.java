@@ -1,15 +1,15 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 import ru.ifmo.practice.gateway.helper.IdValidator;
@@ -18,22 +18,19 @@ import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {UpdateTransactionStatusOperation.class, IdValidator.class})
 public class UpdateTransactionStatusOperationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
     @Autowired
     private UpdateTransactionStatusOperation updateTransactionStatusOperation;
-
     @Autowired
     private IdValidator idValidator;
-
     @MockBean
     private TransactionDaoAdapter transactionDaoAdapter;
-
-    private final Random random = new Random(System.currentTimeMillis());
 
     @Test
     public void testCorrect() {

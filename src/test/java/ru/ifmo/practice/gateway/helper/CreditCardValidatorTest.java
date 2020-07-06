@@ -1,8 +1,8 @@
 package ru.ifmo.practice.gateway.helper;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
 
 import java.util.Random;
@@ -10,19 +10,15 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 class CreditCardValidatorTest {
-
-    private final Random random = new Random(System.currentTimeMillis());
-    private final CardDataGenerator cardDataGenerator = new CardDataGenerator();
-
-    CreditCardValidator creditCardValidator = new CreditCardValidator();
 
     private static int TEST_NUMBER = 20;
     private static int NUMBER_LENGTH = 16;
-
-
     private static String BAD_CHARS = "!@#$%^&*()1234567890";
+    private final Random random = new Random(System.currentTimeMillis());
+    private final CardDataGenerator cardDataGenerator = new CardDataGenerator();
+    CreditCardValidator creditCardValidator = new CreditCardValidator();
 
     @Test
     void testCorrect() {
@@ -93,7 +89,6 @@ class CreditCardValidatorTest {
             assertEquals(e.getMessage(), "срок действия карты истек");
         }
     }
-
 
 
 }

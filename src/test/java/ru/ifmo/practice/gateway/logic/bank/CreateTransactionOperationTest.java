@@ -1,48 +1,38 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import io.swagger.models.auth.In;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
-import ru.ifmo.practice.gateway.builder.CardBuilder;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
-import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.*;
 import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 
-import java.time.LocalDateTime;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {CreateTransactionOperation.class, CreditCardValidator.class, IdValidator.class})
 public class CreateTransactionOperationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
+    private final TransactionDataGenerator transactionDataGenerator = new TransactionDataGenerator();
     @Autowired
     private CreateTransactionOperation createTransactionOperation;
-
     @Autowired
     private CreditCardValidator creditCardValidator;
-
     @Autowired
     private IdValidator idValidator;
-
     @MockBean
     private TransactionDaoAdapter transactionDaoAdapter;
-
-    private final Random random = new Random(System.currentTimeMillis());
-
-    private final TransactionDataGenerator transactionDataGenerator = new TransactionDataGenerator();
-
     private CreditCardView creditCardView;
     private long invoiceId;
 
