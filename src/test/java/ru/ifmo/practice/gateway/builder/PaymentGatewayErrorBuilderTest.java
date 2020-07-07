@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class PaymentGatewayErrorBuilderTest {
 
-    private final int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
+    private static final String BASIC_MESSAGE = "message ";
     private final PaymentGatewayErrorBuilder builder = new PaymentGatewayErrorBuilder();
-    private final String BASIC_MESSAGE = "message ";
 
     @Test
     void test() {

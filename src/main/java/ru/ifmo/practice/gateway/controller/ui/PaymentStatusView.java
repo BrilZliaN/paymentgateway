@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Route(value = "status", layout = MainView.class)
-public class PaymentStatusView extends FormLayout {
+class PaymentStatusView extends FormLayout {
 
     private final CustomerApi customerApi;
     private final UserStorage userStorage;

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 class TransactionBuilderTest {
 
-    private final static int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
     private final TransactionBuilder builder = new TransactionBuilder();
     private final CardDataGenerator cardDataGenerator = new CardDataGenerator();
 

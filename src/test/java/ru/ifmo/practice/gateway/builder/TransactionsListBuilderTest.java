@@ -18,20 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TransactionsListBuilderTest {
 
     private static final int LIST_SIZE = 10;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
     private final TransactionsListBuilder transactionsListBuilder = new TransactionsListBuilder();
 
     public static List<Transaction> generateList() {
         List<Transaction> list = new ArrayList<>();
         for (int i = 0; i < LIST_SIZE; i++) {
             var transaction = new Transaction();
-            transaction.setId((long) Math.abs(random.nextInt()));
+            transaction.setId((long) Math.abs(RANDOM.nextInt()));
             transaction.setCreated(LocalDateTime.now());
             transaction.setStatusCode(TransactionView.StatusEnum.PROCESSING.toString());
             transaction.setStatusDate(LocalDateTime.now());
             var invoice = new Invoice();
             invoice.setId((long) i);
-            invoice.setSum(random.nextInt());
+            invoice.setSum(RANDOM.nextInt());
             transaction.setInvoice(invoice);
             list.add(transaction);
         }

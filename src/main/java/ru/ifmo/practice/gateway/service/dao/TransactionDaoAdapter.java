@@ -53,7 +53,7 @@ public class TransactionDaoAdapter {
         }
     }
 
-    public Transaction getTransactionById(Long id) {
+    private Transaction getTransactionById(Long id) {
         try {
             return transactionRepository.findById(id).orElseThrow(ExceptionFactory::notFound);
         } catch (DataAccessException dataAccessException) {
@@ -80,7 +80,7 @@ public class TransactionDaoAdapter {
     }
 
     @Transactional(value = Transactional.TxType.SUPPORTS)
-    Card addCard(CreditCardView creditCardView) {
+    public Card addCard(CreditCardView creditCardView) {
         final var card = cardBuilder.build(creditCardView);
         try {
             if (cardRepository.existsCardByNumberAndOwnerAndValid(card.getNumber(), card.getOwner(), card.getValid())) {

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ExpirationDateField extends CustomField<String> {
+class ExpirationDateField extends CustomField<String> {
 
     private static final ZoneId LAST_TIME_ZONE = ZoneId.ofOffset("UTC", ZoneOffset.MIN);
     private static final int SUPPORT_YEARS = 20;
@@ -26,7 +26,7 @@ public class ExpirationDateField extends CustomField<String> {
 
     private List<Integer> years = Collections.emptyList();
 
-    public ExpirationDateField() {
+    ExpirationDateField() {
         setLabel("Действительна до");
         initData();
         var layout = new HorizontalLayout();

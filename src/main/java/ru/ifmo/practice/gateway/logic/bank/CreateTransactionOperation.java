@@ -3,8 +3,6 @@ package ru.ifmo.practice.gateway.logic.bank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
-import ru.ifmo.practice.gateway.api.models.TransactionReadinessView;
-import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.CreditCardValidator;
 import ru.ifmo.practice.gateway.helper.IdValidator;

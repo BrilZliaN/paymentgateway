@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @Slf4j
 @Route(value = "payment", layout = MainView.class)
-public class PaymentFormView extends FormLayout implements HasUrlParameter<String> {
+class PaymentFormView extends FormLayout implements HasUrlParameter<String> {
 
     private final CustomerApi customerApi;
     private final UserStorage userStorage;

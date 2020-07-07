@@ -13,7 +13,7 @@ class CardBuilderTest {
     private static final int TEST_NUMBER = 100;
     private static final long BASIC_NUMBER = 1000000000;
     private static final String BASIC_NAME = "JOHN SMITH ";
-    CardBuilder cardBuilder = new CardBuilder();
+    private final CardBuilder cardBuilder = new CardBuilder();
 
     @Test
     void test() {
