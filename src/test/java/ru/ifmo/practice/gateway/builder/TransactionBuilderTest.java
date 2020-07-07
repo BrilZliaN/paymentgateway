@@ -1,8 +1,8 @@
 package ru.ifmo.practice.gateway.builder;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.ifmo.practice.gateway.api.models.TransactionStatusView;
 import ru.ifmo.practice.gateway.dto.entity.Card;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
@@ -11,12 +11,13 @@ import ru.ifmo.practice.gateway.helper.CardDataGenerator;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 class TransactionBuilderTest {
 
-    private final static int TEST_NUMBER = 100;
+    private static final int TEST_NUMBER = 100;
     private final TransactionBuilder builder = new TransactionBuilder();
     private final CardDataGenerator cardDataGenerator = new CardDataGenerator();
 

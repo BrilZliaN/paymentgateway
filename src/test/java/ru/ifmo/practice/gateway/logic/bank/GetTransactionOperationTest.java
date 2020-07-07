@@ -1,15 +1,15 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.dto.entity.Transaction;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 import ru.ifmo.practice.gateway.helper.IdValidator;
@@ -19,20 +19,17 @@ import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {GetTransactionOperation.class, IdValidator.class})
 public class GetTransactionOperationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
     @Autowired
     private GetTransactionOperation getTransactionOperation;
-
     @Autowired
     private IdValidator idValidator;
-
     @MockBean
     private TransactionDaoAdapter transactionDaoAdapter;
-
-    private final Random random = new Random(System.currentTimeMillis());
 
     @Test
     public void testCorrect() {

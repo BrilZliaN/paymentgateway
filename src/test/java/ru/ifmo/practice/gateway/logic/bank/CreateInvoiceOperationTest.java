@@ -1,15 +1,15 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.api.models.InvoicePostView;
 import ru.ifmo.practice.gateway.api.models.InvoiceView;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
@@ -17,26 +17,21 @@ import ru.ifmo.practice.gateway.helper.InvoicePostViewValidator;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 import ru.ifmo.practice.gateway.service.dao.InvoiceDaoAdapter;
 
-import javax.swing.*;
-
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {CreateInvoiceOperation.class, InvoicePostViewValidator.class})
 public class CreateInvoiceOperationTest {
 
+    private final Random random = new Random(System.currentTimeMillis());
     @MockBean
     private InvoiceDaoAdapter invoiceDaoAdapter;
-
     @Autowired
     private CreateInvoiceOperation createInvoiceOperation;
-
     @Autowired
     private InvoicePostViewValidator invoicePostViewValidator;
-
-    private final Random random = new Random(System.currentTimeMillis());
 
     @Test
     public void createCorrect() {

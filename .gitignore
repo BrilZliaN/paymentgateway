@@ -18,4 +18,13 @@ target/
 *.iml
 *.ipr
 
+### Vaadin generated files ###
+/package.json
+/tsconfig.json
+/webpack.config.js
+/types.d.ts
+/webpack.generated.js
+/package-lock.json
+/node_modules/
+
 server.log*

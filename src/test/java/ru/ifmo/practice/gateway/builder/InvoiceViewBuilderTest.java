@@ -1,8 +1,8 @@
 package ru.ifmo.practice.gateway.builder;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
 
 import java.time.LocalDateTime;
@@ -10,10 +10,11 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 class InvoiceViewBuilderTest {
 
-    private final Random random = new Random(System.currentTimeMillis());
     private static final int TEST_NUMBER = 100;
+    private final Random random = new Random(System.currentTimeMillis());
     private final InvoiceViewBuilder invoiceViewBuilder = new InvoiceViewBuilder();
 
     @Test

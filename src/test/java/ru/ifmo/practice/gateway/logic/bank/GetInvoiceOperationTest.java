@@ -1,14 +1,14 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ifmo.practice.gateway.builder.InvoiceViewBuilder;
 import ru.ifmo.practice.gateway.dto.entity.Invoice;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
@@ -19,9 +19,10 @@ import ru.ifmo.practice.gateway.service.dao.InvoiceDaoAdapter;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {InvoiceViewBuilder.class, GetInvoiceOperation.class, IdValidator.class})
 public class GetInvoiceOperationTest {
 
@@ -38,7 +39,6 @@ public class GetInvoiceOperationTest {
 
     @MockBean
     private InvoiceDaoAdapter invoiceDaoAdapter;
-
 
     @Test
     public void testGetInvoice() {

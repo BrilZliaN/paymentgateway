@@ -1,27 +1,26 @@
 package ru.ifmo.practice.gateway.logic.bank;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.ifmo.practice.gateway.api.models.TransactionView;
+import ru.ifmo.practice.gateway.api.models.TransactionsList;
 import ru.ifmo.practice.gateway.builder.TransactionsListBuilder;
 import ru.ifmo.practice.gateway.builder.TransactionsListBuilderTest;
 import ru.ifmo.practice.gateway.helper.ExceptionFactory;
 import ru.ifmo.practice.gateway.helper.PaymentGatewayException;
 import ru.ifmo.practice.gateway.service.dao.TransactionDaoAdapter;
 
-import ru.ifmo.practice.gateway.api.models.TransactionsList;
-import ru.ifmo.practice.gateway.api.models.TransactionView;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {GetTransactionsOperation.class, TransactionsListBuilder.class})
 public class GetTransactionsOperationTest {
 
@@ -62,11 +61,11 @@ public class GetTransactionsOperationTest {
     public void testDatabaseException() {
         Mockito.when(transactionDaoAdapter.getAllTransactions()).thenThrow(ExceptionFactory.wrap(
                 new DataAccessException("error") {
-            @Override
-            public String getMessage() {
-                return super.getMessage();
-            }
-        }));
+                    @Override
+                    public String getMessage() {
+                        return super.getMessage();
+                    }
+                }));
         var exception = Assertions.assertThrows(PaymentGatewayException.class, getTransactionsOperation::process);
         Mockito.verify(transactionDaoAdapter, Mockito.times(1)).getAllTransactions();
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
