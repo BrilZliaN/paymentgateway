@@ -43,7 +43,7 @@ spring:
 
 coordinator:
   request-uri: "http://localhost:9123/accept?Content-Type=application/json"
-  source-pattern: "http://localhost:80/v1/transaction/"
+  source-pattern: "http://localhost:8080/transaction/"
 
 ---
 
@@ -67,4 +67,4 @@ spring:
 
 coordinator:
   request-uri: "http://localhost:9123/accept?Content-Type=application/json"
-  source-pattern: "http://localhost:80/v1/transaction/"
+  source-pattern: "http://localhost:80/transaction/"

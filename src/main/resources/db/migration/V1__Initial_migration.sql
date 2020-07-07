@@ -18,9 +18,9 @@ CREATE TABLE transaction (
     PRIMARY KEY (id),
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status_code VARCHAR(100),
-    status_date TIMESTAMP,
-    card_id INT,
-    invoice_id INT,
+    status_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    card_id BIGINT,
+    invoice_id BIGINT,
     CONSTRAINT card_id FOREIGN KEY (card_id)
     REFERENCES card(id),
     CONSTRAINT invoice_id FOREIGN KEY (invoice_id)
