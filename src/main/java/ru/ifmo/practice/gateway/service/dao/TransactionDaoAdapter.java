@@ -75,6 +75,7 @@ public class TransactionDaoAdapter {
         }
     }
 
+    @Transactional
     public Transaction getTransactionByInvoiceId(Long id) {
         try {
             return transactionRepository.findByInvoiceId(id, LATEST_TRANSACTION)
