@@ -3,6 +3,8 @@ package ru.ifmo.practice.gateway.service.dao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import ru.ifmo.practice.gateway.api.models.CreditCardView;
 import ru.ifmo.practice.gateway.api.models.TransactionReadinessView;
@@ -22,6 +24,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TransactionDaoAdapter {
+
+    private static final PageRequest LATEST_TRANSACTION = PageRequest.of(1, 1, Sort.by(Sort.Order.desc("created")));
 
     private final TransactionRepository transactionRepository;
     private final CardRepository cardRepository;
@@ -73,7 +77,9 @@ public class TransactionDaoAdapter {
 
     public Transaction getTransactionByInvoiceId(Long id) {
         try {
-            return transactionRepository.findByInvoiceId(id).orElseThrow(ExceptionFactory::notFound);
+            return transactionRepository.findByInvoiceId(id, LATEST_TRANSACTION)
+                    .findFirst()
+                    .orElseThrow(ExceptionFactory::notFound);
         } catch (DataAccessException dataAccessException) {
             throw ExceptionFactory.wrap(dataAccessException);
         }
