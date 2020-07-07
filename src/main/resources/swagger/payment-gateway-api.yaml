@@ -1,0 +1,187 @@
+swagger: "2.0"
+info:
+  description: "Payment gateway sample application (Solanteq practice task)"
+  version: "1.0"
+  title: "Payment Gateway API"
+host: "localhost:8080"
+tags:
+  - name: customer
+    description: Customer-side actions
+  - name: bank
+    description: Bank-side actions
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+paths:
+  /invoice:
+    post:
+      tags:
+        - customer
+      operationId: addInvoice
+      parameters:
+        - in: body
+          name: invoicePostView
+          required: true
+          schema:
+            $ref: '#/definitions/InvoicePostView'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/InvoiceView'
+  '/invoice/{invoiceId}':
+    get:
+      tags:
+        - customer
+      operationId: getInvoiceStatus
+      parameters:
+        - $ref: '#/parameters/InvoiceId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TransactionReadinessView'
+    post:
+      tags:
+        - customer
+      operationId: createTransaction
+      parameters:
+        - $ref: '#/parameters/InvoiceId'
+        - in: body
+          name: creditCard
+          required: true
+          schema:
+            $ref: '#/definitions/CreditCardView'
+      responses:
+        '201':
+          description: Created
+  /transaction:
+    get:
+      tags:
+        - customer
+      operationId: getTransactions
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TransactionsList'
+  '/transaction/{transactionId}':
+    put:
+      tags:
+        - bank
+      operationId: updateTransactionStatus
+      security:
+        - basicAuth: []
+      parameters:
+        - $ref: '#/parameters/TransactionId'
+        - in: body
+          name: transactionStatus
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionStatusView'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+definitions:
+  InvoicePostView:
+    type: object
+    properties:
+      sum:
+        type: number
+        format: double
+  InvoiceView:
+    allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+      - $ref: '#/definitions/InvoicePostView'
+  CreditCardView:
+    type: object
+    properties:
+      number:
+        type: integer
+        format: int64
+        minimum: 100000000000000
+      expirationDate:
+        type: string
+        pattern: '^\d{2}\/\d{2}$'
+      holder:
+        type: string
+        minLength: 1
+      cvv:
+        type: string
+        pattern: '^\d{3}$'
+  TransactionReadinessView:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - UNKNOWN
+          - WAITING_FOR_BANK_RESPONSE
+          - PROCESSING
+          - SUCCESS
+          - FAIL
+  TransactionStatusView:
+    type: object
+    properties:
+      answerCode:
+        type: string
+  ErrorView:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+  TransactionsList:
+    type: array
+    items:
+      type: object
+      $ref: '#/definitions/TransactionView'
+  TransactionView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        invoiceId:
+          type: integer
+          format: int64
+        sum:
+          type: number
+          format: double
+        created:
+          type: string
+        status:
+          type: string
+          enum:
+            - UNKNOWN
+            - WAITING_FOR_BANK_RESPONSE
+            - PROCESSING
+            - SUCCESS
+            - FAIL
+parameters:
+  InvoiceId:
+    in: path
+    name: invoiceId
+    type: integer
+    format: int64
+    required: true
+  TransactionId:
+    in: path
+    name: transactionId
+    type: integer
+    format: int64
+    required: true

@@ -1,3 +1,4 @@
+HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -18,13 +19,13 @@ target/
 *.iml
 *.ipr
 
-### Vaadin generated files ###
-/package.json
-/tsconfig.json
-/webpack.config.js
-/types.d.ts
-/webpack.generated.js
-/package-lock.json
-/node_modules/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
 
-server.log*
+### VS Code ###
+.vscode/
