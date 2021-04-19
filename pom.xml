@@ -20,7 +20,7 @@
 		<java.version>11</java.version>
 		<maven.compiler.release>11</maven.compiler.release>
 		<springfox-version>2.9.2</springfox-version>
-		<vaadin.version>16.0.0</vaadin.version>
+		<vaadin.version>19.0.5</vaadin.version>
 		<start-class>ru.ifmo.practice.gateway.PaymentGatewayApplication</start-class>
 	</properties>
 
